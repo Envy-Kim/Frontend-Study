@@ -24,6 +24,8 @@ class AutonomousCustomBtn extends HTMLElement {
         /** Create a shadow root */
         this.attachShadow({mode: "open"});
 
+        this.eventType = 'alert';
+
         const slot = document.createElement('slot');
         slot.setAttribute('name', 'btn_text');
 
@@ -44,13 +46,19 @@ class AutonomousCustomBtn extends HTMLElement {
             this.shadowRoot.querySelector('.custom-btn').setAttribute('id', this.getAttribute('id'));
 
         if (this.getAttribute('class'))
-            this.shadowRoot.querySelector('.custom-btn').setAttribute('id', this.getAttribute('class'));
+            this.shadowRoot.querySelector('.custom-btn').setAttribute('class', this.getAttribute('class'));
 
         if (this.getAttribute('name'))
-            this.shadowRoot.querySelector('.custom-btn').setAttribute('id', this.getAttribute('name'));
+            this.shadowRoot.querySelector('.custom-btn').setAttribute('name', this.getAttribute('name'));
 
         if (this.getAttribute('value'))
-            this.shadowRoot.querySelector('.custom-btn').setAttribute('id', this.getAttribute('value'));
+            this.shadowRoot.querySelector('.custom-btn').setAttribute('value', this.getAttribute('value'));
+
+        this.eventType = (this.getAttribute('eventType')) ? this.getAttribute('eventType') : this.eventType;
+
+        this.addEventListener('click',
+            () => (this.eventType === 'console') ? console.log("This is Autonomous custom elements!") : alert("This is Autonomous custom elements!")
+        )
     }
 
     /**
@@ -61,7 +69,6 @@ class AutonomousCustomBtn extends HTMLElement {
     }
 
 }
-
 customElements.define('autonomous-custom-btn', AutonomousCustomBtn);
 
 
@@ -71,17 +78,18 @@ class builtinCustomBtn extends HTMLButtonElement {
     constructor() {
         super();
 
+        this.eventType = 'alert';
+
         /** write element functionality in here */
         //this.addEventListener('click', () => alert("This is Customized built-in elements!"));
     }
 
     connectedCallback() {
-        this.eventType = (this.getAttribute('eventType')) ? this.getAttribute('eventType') : 'alert';
+        this.eventType = (this.getAttribute('eventType')) ? this.getAttribute('eventType') : this.eventType;
 
         this.addEventListener('click',
             () => (this.eventType == 'console') ? console.log("This is Customized built-in elements!") : alert("This is Customized built-in elements!")
         );
     }
 }
-
 customElements.define('builtin-custom-btn', builtinCustomBtn, {extends: "button"});

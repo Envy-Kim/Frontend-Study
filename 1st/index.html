@@ -2,19 +2,36 @@
 <html lang="kr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Custom Elements / Shadow DOM</title>
     <script src="./custom_btn.js" type="application/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="./custom_elem.css">
+    <script src="./custom_tab.js" type="application/javascript"></script>
 </head>
 <body>
-    <!-- Autonomous custom elements -->
-    <autonomous-custom-btn>
-        <slot slot="btn_text">autonomous</slot>
-    </autonomous-custom-btn>
+    <div>
+        <h1>Custom Element 종류</h1>
+        <div>
+            <!-- Autonomous custom elements -->
+            <h3>Autonomous custom elements</h3>
+            <autonomous-custom-btn id="btn1" name="btn1" value="btn1" eventType="alert">
+                <slot slot="btn_text">버튼 alert</slot>
+            </autonomous-custom-btn>
 
-    <!-- Customized built-in elements -->
-    <button is="builtin-custom-btn">Click me : alert</button>
-    <button is="builtin-custom-btn" eventType="console">Click me : console</button>
-    <button is="builtin-custom-btn" disabled>Disabled</button>
+            <autonomous-custom-btn id="btn2" name="btn2" value="btn2" eventType="console">
+                <slot slot="btn_text">버튼 console</slot>
+            </autonomous-custom-btn>
+        </div>
+
+        <div>
+            <!-- Customized built-in elements -->
+            <h3>Customized built-in elements</h3>
+            <button is="builtin-custom-btn">Click me : alert</button>
+            <button is="builtin-custom-btn" eventType="console">Click me : console</button>
+            <button is="builtin-custom-btn" disabled>Disabled</button>
+        </div>
+    </div>
+
+    <div>
+
+    </div>
 </body>
 </html>
