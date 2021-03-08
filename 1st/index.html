@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Custom Elements / Shadow DOM</title>
     <script src="./custom_btn.js" type="application/javascript"></script>
-    <script src="./custom_tab.js" type="application/javascript"></script>
+    <script src="./custom_list.js" type="application/javascript"></script>
 </head>
 <body>
     <div>
@@ -31,7 +31,26 @@
     </div>
 
     <div>
+        <!--
+        Slot : We can only display one bit of text inside it
+        슬롯에는 텍스트만 집어넣을 수 있다.
 
+        지정된 slot에 ul과 li를 집어넣으면 li 개수를 마음대로 출력은 가능하지만
+        custom element에 지정된 css가 적용되지 않아 외부에 별도로 css를 지정해주어야함.
+        -->
+        <simple-list bgColor="white" activeColor="gray">
+            <slot slot="item1">test1</slot>
+            <slot slot="item2">test2</slot>
+            <slot slot="item3">test3</slot>
+            <slot slot="item4">test4</slot>
+        </simple-list>
+
+        <simple-list listType="horizontal">
+            <slot slot="item1">abc</slot>
+            <slot slot="item2">def</slot>
+            <slot slot="item3">ghi</slot>
+            <slot slot="item4">jkl</slot>
+        </simple-list>
     </div>
 </body>
 </html>

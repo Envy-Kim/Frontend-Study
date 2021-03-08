@@ -9,6 +9,7 @@
  * class SimpleBtn extends HTMLButtonElement() {}
  * customElements.define('simple-btn', SimpleBtn, {extends: 'button'});
  *
+ *
  * ==> Autonomous custom elements와 Customized built-in elements 차이
  *
  * Autonomous custom elements : 사용자가 요소 하나하나를 설정
