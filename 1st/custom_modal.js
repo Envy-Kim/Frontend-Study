@@ -1,10 +1,12 @@
-/*
-    커스텀 엘리먼트
-    쉐도우돔
-    슬롯 (or template)
-    이용하여 Custom modal 작성
- */
 class SimpleModal extends HTMLElement {
+
+    /**
+     * Specify observed attributes so that attributeChangedCallback will work
+     * 관찰할 속성을 지정하여, 해당 속성이 변경되었을 때 attributeChangedCallback() 이 동작
+     */
+    static get observedAttributes() {
+        return ['visible'];
+    }
 
     constructor() {
         super();
@@ -15,16 +17,18 @@ class SimpleModal extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <div class="modal-wrap">
                 <div class="modal-box">
-                    <span class="close">&times;</span>
                     <div class="modal-title">
-                        <slot name="title"></slot>
+                        <p>
+                            <slot name="title"></slot>
+                        </p>
+                        <span class="close">&times;</span>
                     </div>
                     <div class="modal-body">
-                        <slot name="content">test</slot>
+                        <slot name="content"></slot>
                     </div>
                 </div>
             </div>
-            
+
             <style>
                 .modal-wrap {
                     display: none;
@@ -32,45 +36,70 @@ class SimpleModal extends HTMLElement {
                     background-color: rgb(0, 0, 0);
                     background-color: rgba(0, 0, 0, 0.4);
                     z-index: 1;
-                    left: 0;
                     top: 0;
                     width: 100%;
                     height: 100%;
                     overflow: auto;
                 }
-    
+
                 .modal-box {
-                    background-color: #efefef;
+                    position: relative;
                     margin: 15% auto;
                     padding: 20px;
-                    border: 1px solid #888;
-                    width: 50%;
-                    border-radius: 15px;
+                    width: 640px;
                     -webkit-animation-name: animatetop;
                     -webkit-animation-duration: 1s;
                     animation-name: animatetop;
                     animation-duration: 0.4s;
                 }
-    
-                .close {
-                    color: #aaa;
-                    float: right;
-                    font-size: 28px;
-                    font-weight: bold;
+                
+                .modal-box .modal-title {
+                    position: relative;
+                    height: 90px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 30px 30px 0 0;
                 }
-    
+                
+                .modal-box .modal-title p {
+                    font-size: 42px;
+                }
+                
+                .modal-box .modal-body {
+                    background-color: #fff;
+                    border-radius: 0 0 30px 30px;
+                    padding: 35px 40px 50px 40px;
+                }
+                .modal-box .modal-body p {
+                    text-align: center;
+                    font-size: 22px;
+                    font-weight: 500;
+                    line-height: 30px;
+                }
+
+                .close {
+                    position: absolute;
+                    width: 30px;
+                    height: 30px;
+                    top: 0;
+                    bottom: 0;
+                    right: 30px;
+                    font-size: 42px;
+                }
+
                 .close:hover,
                 .close:focus {
                     color: black;
                     text-decoration: none;
                     cursor: pointer;
                 }
-                
+
                 @-webkit-keyframes animatetop {
                     from {top: -300px; opacity: 0}
                     to {top: 0; opacity: 1}
                 }
-                
+
                 @keyframes animatetop {
                     from {top: -300px; opacity: 0}
                     to {top: 0; opacity: 1}
@@ -84,9 +113,9 @@ class SimpleModal extends HTMLElement {
      */
     connectedCallback() {
         this._modal = this.shadowRoot.querySelector('.modal-wrap');
-        this.shadowRoot.querySelector('.close').addEventListener('click', this._hide.bind(this));
+        this.shadowRoot.querySelector('.close').addEventListener('click', ()=> this.setAttribute('visible', 'false'));
 
-        this.shadowRoot.querySelector('.modal-box').style.backgroundColor
+        this.shadowRoot.querySelector('.modal-title').style.backgroundColor
             = this.getAttribute('bgcolor');
     }
 
@@ -98,12 +127,10 @@ class SimpleModal extends HTMLElement {
     }
 
     _hide() {
-        this._visible = true;
         this._modal.style.display = 'none';
     }
 
-    show() {
-        this._visible = false;
+    _show() {
         this._modal.style.display = 'block';
     }
 
@@ -115,9 +142,18 @@ class SimpleModal extends HTMLElement {
      * @param newValue
      */
     attributeChangedCallback(name, oldValue, newValue) {
-        /** todo: 요걸 사용해서 _hide(), show()를 바꿀 수 있지 않을까? */
-        console.log('Custom square element attributes changed.');
+        console.log('Custom element attributes changed.');
+
+        this._visible = (this.getAttribute('visible') === 'true') ? true : false;
+
+        if(this._visible) this._show();
+        else this._hide();
     }
 }
 
 customElements.define('simple-modal', SimpleModal);
+
+function showModal(id) {
+    const visible = document.querySelector('#'+id);
+    visible.setAttribute('visible', 'true');
+}

@@ -5,6 +5,7 @@
     <title>Custom Elements / Shadow DOM</title>
     <script src="./custom_btn.js" type="application/javascript"></script>
     <script src="./custom_list.js" type="application/javascript"></script>
+    <script src="./custom_modal.js" type="application/javascript"></script>
 </head>
 <body>
     <div>
@@ -53,6 +54,33 @@
             <slot slot="item4">jkl</slot>
         </simple-list>
         <!-- todo: custom-modal을 만들어서 list의 item을 눌렀을 때 값을 넘겨 모달로 띄우는 것 해보기 -->
+
+        <simple-modal
+                id="list-modal"
+                bgColor="gray">
+            <slot slot="title">List Item</slot>
+            <slot slot="content">item</slot>
+        </simple-modal>
+    </div>
+
+    <div>
+        <h1>예제(3. 과제 class.js)를 attributeChangedCallback() 을 이용하여 동작되도록 수정</h1>
+        <button onclick="showModal('modal1')">모달1</button>
+        <button onclick="showModal('modal2')">모달2</button>
+
+        <simple-modal
+                id="modal1"
+                bgColor="yellow">
+            <slot slot="title">모달1</slot>
+            <slot slot="content">모달1 컨텐츠</slot>
+        </simple-modal>
+
+        <simple-modal
+                id="modal2"
+                bgColor="pink">
+            <slot slot="title">모달2</slot>
+            <slot slot="content">모달2 컨텐츠</slot>
+        </simple-modal>
     </div>
 </body>
 </html>
