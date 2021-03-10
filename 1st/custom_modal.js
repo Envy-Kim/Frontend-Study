@@ -118,7 +118,7 @@ class SimpleModal extends HTMLElement {
      * 가상 트리가 document 에서 연결 해제 된 후 콜백
      */
     disconnectedCallback() {
-        this.shadowRoot.querySelector('.close').removeEventListener('click', this._hide);
+        this.shadowRoot.querySelector('.close').removeEventListener('click', ()=> this.setAttribute('visible', 'false'));
     }
 
     _hide() {

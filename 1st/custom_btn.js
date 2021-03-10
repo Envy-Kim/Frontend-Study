@@ -66,7 +66,9 @@ class AutonomousCustomBtn extends HTMLElement {
      * 가상 트리가 document 에서 연결 해제 된 후 콜백
      */
     disconnectedCallback() {
-        //
+        this.removeEventListener('click',
+            () => (this.eventType === 'console') ? console.log("This is Autonomous custom elements!") : alert("This is Autonomous custom elements!")
+        )
     }
 
 }
@@ -89,6 +91,12 @@ class builtinCustomBtn extends HTMLButtonElement {
         this.eventType = (this.getAttribute('eventType')) ? this.getAttribute('eventType') : this.eventType;
 
         this.addEventListener('click',
+            () => (this.eventType == 'console') ? console.log("This is Customized built-in elements!") : alert("This is Customized built-in elements!")
+        );
+    }
+
+    disconnectedCallback() {
+        this.removeEventListener('click',
             () => (this.eventType == 'console') ? console.log("This is Customized built-in elements!") : alert("This is Customized built-in elements!")
         );
     }

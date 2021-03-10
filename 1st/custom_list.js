@@ -85,7 +85,9 @@ class SimpleList extends HTMLElement {
      * 가상 트리가 document 에서 연결 해제 된 후 콜백
      */
     disconnectedCallback() {
-        //
+        for(let i=0; i < this.item.length; i++){
+            this.item[i].removeEventListener('click', ()=> this._setActiveBgColor(i));
+        }
     }
 
     /** javascript 객체는 private 속성을 지정할 수 없기 때문에 _ 를 속성명에 붙이는 것으로 private으로 간주 */
