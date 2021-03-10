@@ -47,7 +47,7 @@ class AutonomousCustomBtn extends HTMLElement {
             this.shadowRoot.querySelector('.custom-btn').setAttribute('id', this.getAttribute('id'));
 
         if (this.getAttribute('class'))
-            this.shadowRoot.querySelector('.custom-btn').setAttribute('class', this.getAttribute('class'));
+            this.shadowRoot.querySelector('.custom-btn').classList.add(this.getAttribute('class'));
 
         if (this.getAttribute('name'))
             this.shadowRoot.querySelector('.custom-btn').setAttribute('name', this.getAttribute('name'));

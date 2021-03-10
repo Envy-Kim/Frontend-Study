@@ -5,6 +5,7 @@ class SimpleList extends HTMLElement {
         this.listType = 'vertical';
         this.bgColor = '#d4cced';
         this.activeColor = '#fff8d4';
+        this.item = [];
 
         this.attachShadow({mode: "open"});
 
@@ -12,10 +13,7 @@ class SimpleList extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <div class="list-wrap">
                 <ul class="list">
-                    <li class="list-item"><slot name="item1"></slot></li>
-                    <li class="list-item"><slot name="item2"></slot></li>
-                    <li class="list-item"><slot name="item3"></slot></li>
-                    <li class="list-item"><slot name="item4"></slot></li>
+                    <slot name="item" class="itemSlot"></slot>
                 </ul>
             </div>
  
@@ -24,14 +22,14 @@ class SimpleList extends HTMLElement {
                     padding: 36px;
                 }
 
-                .list-wrap .list li {
+               .list-wrap .list ::slotted(li) {
                     list-style: none;
                     margin-right: 8px;
                     border: 2px solid;
                     padding: 4px;
                 }
 
-                .list.horizontal-list li{
+                .list.horizontal-list ::slotted(li){
                     float: left;
                 }
             </style>
@@ -53,17 +51,27 @@ class SimpleList extends HTMLElement {
         this.activeColor = (this.getAttribute('activeColor')) ? this.getAttribute('activeColor') : this.activeColor;
 
         // li에 배경색 설정 및 이벤트 주입
-        let item = this.shadowRoot.querySelectorAll(".list-item");
-        for(let i=0; i < item.length; i++){
-            item[i].style.backgroundColor = this.bgColor;
-            item[i].addEventListener('click', ()=> this._setActiveBgColor(i));
+        let list = this.shadowRoot.querySelector(".itemSlot");
+        /**
+         * list.assignedNodes() 사용시 빈배열 반환.
+         *
+         * => 선택한 .itemSlot에 매칭되는 slot 내용을 파싱하지 못한 상태
+         * index.html에서 custom_list.js를 로드할 때 defer 옵션을 주어 해결
+         */
+        this.item = list.assignedNodes();
+
+
+        for(let i=0; i < this.item.length; i++){
+            console.log(this.item[i]);
+            this.item[i].style.backgroundColor = this.bgColor;
+            this.item[i].addEventListener('click', ()=> this._setActiveBgColor(i));
         }
 
         if (this.getAttribute('id'))
             this.shadowRoot.querySelector('.list').setAttribute('id', this.getAttribute('id'));
 
         if (this.getAttribute('class'))
-            this.shadowRoot.querySelector('.list').setAttribute('class', this.getAttribute('class'));
+            this.shadowRoot.querySelector('.list').classList.add(this.getAttribute('class'));
 
         if (this.getAttribute('name'))
             this.shadowRoot.querySelector('.list').setAttribute('name', this.getAttribute('name'));
@@ -79,11 +87,10 @@ class SimpleList extends HTMLElement {
     /** javascript 객체는 private 속성을 지정할 수 없기 때문에 _ 를 속성명에 붙이는 것으로 private으로 간주 */
     // 선택된 li만 색상을 변경
     _setActiveBgColor(index) {
-        let item = this.shadowRoot.querySelectorAll(".list-item");
-        for(let i=0; i < item.length; i++){
-            item[i].style.backgroundColor = this.bgColor;
+        for(let i=0; i < this.item.length; i++){
+            this.item[i].style.backgroundColor = this.bgColor;
         }
-        item[index].style.backgroundColor = this.activeColor;
+        this.item[index].style.backgroundColor = this.activeColor;
     }
 }
 customElements.define('simple-list', SimpleList);

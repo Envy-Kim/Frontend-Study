@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Custom Elements / Shadow DOM</title>
-    <script src="./custom_btn.js" type="application/javascript"></script>
-    <script src="./custom_list.js" type="application/javascript"></script>
-    <script src="./custom_modal.js" type="application/javascript"></script>
+    <script src="./custom_btn.js"></script>
+    <script src="./custom_modal.js"></script>
+    <!-- defer DOM이 로드 되어 HTML parsing 완료 후 스크립트 실행 -->
+    <script src="./custom_list.js" defer></script>
 </head>
 <body>
-    <div>
-        <h1>Custom Element 종류</h1>
+    <section>
+        <h2>Custom Element 종류</h2>
         <div>
             <!-- Autonomous custom elements -->
-            <h3>Autonomous custom elements</h3>
+            <p>Autonomous custom elements</p>
             <autonomous-custom-btn id="btn1" name="btn1" value="btn1" eventType="alert">
                 <slot slot="btn_text">버튼 alert</slot>
             </autonomous-custom-btn>
@@ -24,47 +25,29 @@
 
         <div>
             <!-- Customized built-in elements -->
-            <h3>Customized built-in elements</h3>
+            <p>Customized built-in elements</p>
             <button is="builtin-custom-btn">Click me : alert</button>
             <button is="builtin-custom-btn" eventType="console">Click me : console</button>
             <button is="builtin-custom-btn" disabled>Disabled</button>
         </div>
-    </div>
+    </section>
 
     <div>
-        <h1>Custom Element 만들어보기</h1>
-        <!--
-        Slot : We can only display one bit of text inside it
-        슬롯에는 텍스트만 집어넣을 수 있다.
-
-        지정된 slot에 ul과 li를 집어넣으면 li 개수를 마음대로 출력은 가능하지만
-        custom element에 지정된 css가 적용되지 않아 외부에 별도로 css를 지정해주어야함.
-        -->
         <simple-list bgColor="white" activeColor="gray">
-            <slot slot="item1">test1</slot>
-            <slot slot="item2">test2</slot>
-            <slot slot="item3">test3</slot>
-            <slot slot="item4">test4</slot>
+            <li slot="item">test1</li>
+            <li slot="item">test2</li>
+            <li slot="item">test3</li>
+            <li slot="item">test4</li>
         </simple-list>
 
         <simple-list listType="horizontal">
-            <slot slot="item1">abc</slot>
-            <slot slot="item2">def</slot>
-            <slot slot="item3">ghi</slot>
-            <slot slot="item4">jkl</slot>
+            <li slot="item">abc</li>
+            <li slot="item">def</li>
+            <li slot="item">ghi</li>
         </simple-list>
-        <!-- todo: custom-modal을 만들어서 list의 item을 눌렀을 때 값을 넘겨 모달로 띄우는 것 해보기 -->
-
-        <simple-modal
-                id="list-modal"
-                bgColor="gray">
-            <slot slot="title">List Item</slot>
-            <slot slot="content">item</slot>
-        </simple-modal>
     </div>
 
     <div>
-        <h1>예제(3. 과제 class.js)를 attributeChangedCallback() 을 이용하여 동작되도록 수정</h1>
         <button onclick="showModal('modal1')">모달1</button>
         <button onclick="showModal('modal2')">모달2</button>
 
@@ -82,5 +65,14 @@
             <slot slot="content">모달2 컨텐츠</slot>
         </simple-modal>
     </div>
+
+    <script>
+        let listItem = [
+            {
+                title: '',
+                content: '',
+            }
+        ]
+    </script>
 </body>
 </html>
