@@ -11,6 +11,7 @@
 <body>
     <section>
         <h2>Custom Element 종류</h2>
+
         <div>
             <!-- Autonomous custom elements -->
             <p>Autonomous custom elements</p>
@@ -32,22 +33,42 @@
         </div>
     </section>
 
-    <div>
-        <simple-list bgColor="white" activeColor="gray">
-            <li slot="item">test1</li>
-            <li slot="item">test2</li>
-            <li slot="item">test3</li>
-            <li slot="item">test4</li>
+    <section>
+        <h2>Custom Element 만들기</h2>
+
+        <simple-list
+                id="list1"
+                bgColor="white"
+                activeColor="gray">
+            <template id="li-template1">
+                <li slot="item">test1</li>
+            </template>
         </simple-list>
 
-        <simple-list listType="horizontal">
-            <li slot="item">abc</li>
-            <li slot="item">def</li>
-            <li slot="item">ghi</li>
+        <simple-list
+                id="list2"
+                listType="horizontal">
+            <template id="li-template2">
+                <li slot="item">
+                    <div class="card">
+                        <img src="images/store_thum01.png" class="card-img"/>
+                        <p class="card-title">Title</p>
+                    </div>
+                </li>
+            </template>
         </simple-list>
-    </div>
 
-    <div>
+        <simple-modal
+            id="item-modal"
+            bgColor="">
+            <slot slot="title">모달1</slot>
+            <slot slot="content">모달1 컨텐츠</slot>
+        </simple-modal>
+    </section>
+
+    <section>
+        <h2>예제의 모달 수정</h2>
+
         <button onclick="showModal('modal1')">모달1</button>
         <button onclick="showModal('modal2')">모달2</button>
 
@@ -64,15 +85,91 @@
             <slot slot="title">모달2</slot>
             <slot slot="content">모달2 컨텐츠</slot>
         </simple-modal>
-    </div>
+    </section>
 
     <script>
         let listItem = [
             {
-                title: '',
-                content: '',
-            }
+                title: '타이틀1',
+                content: '내용1',
+                bgColor: 'red',
+            },
+            {
+                title: '타이틀2',
+                content: '내용2',
+                bgColor: 'yellow',
+            },
+            {
+                title: '타이틀3',
+                content: '내용3',
+                bgColor: 'green',
+            },
+            {
+                title: '타이틀4',
+                content: '내용4',
+                bgColor: 'blue',
+            },
         ]
+
+        let listItem2 = [
+            {
+                title: '가게1',
+                content: '내용1',
+                image: './images/store_thum01.png',
+                bgColor: 'gray',
+            },
+            {
+                title: '가게2',
+                content: '내용2',
+                image: './images/store_thum02.png',
+                bgColor: 'white',
+            },
+            {
+                title: '가게3',
+                content: '내용3',
+                image: './images/store_thum03.png',
+                bgColor: 'pink',
+            },
+            {
+                title: '가게4',
+                content: '내용4',
+                image: './images/store_thum04.png',
+                bgColor: 'skyblue',
+            },
+            {
+                title: '가게4',
+                content: '내용5',
+                image: './images/store_thum05.png',
+                bgColor: 'brown',
+            },
+        ]
+
+        listItem.map((item, index) => {
+            let template = document.querySelector('#li-template1').cloneNode(true);
+
+            let div = document.createElement('div');
+            div.innerHTML = template.innerHTML.trim();
+            div.querySelector('li').innerText = item.title;
+
+            let itemClone = div.firstChild;
+            itemClone.setAttribute('data-content', item.content);
+            itemClone.setAttribute('data-index', index);
+            document.querySelector('#list1').append(itemClone);
+        })
+
+        listItem2.map((item, index) => {
+            let template = document.querySelector('#li-template2').cloneNode(true);
+
+            let div = document.createElement('div');
+            div.innerHTML = template.innerHTML.trim();
+            div.querySelector('.card-title').innerText = item.title;
+            div.querySelector('.card-img').setAttribute('src', item.image);
+
+            let itemClone = div.firstChild;
+            itemClone.setAttribute('data-content', item.content);
+            itemClone.setAttribute('data-index', index);
+            document.querySelector('#list2').append(itemClone);
+        })
     </script>
 </body>
 </html>

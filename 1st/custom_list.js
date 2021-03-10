@@ -32,6 +32,12 @@ class SimpleList extends HTMLElement {
                 .list.horizontal-list ::slotted(li){
                     float: left;
                 }
+                
+                .list.horizontal-list:after {
+                    content:"";
+                    display: block;
+                    clear: both;
+                }
             </style>
         `;
     }
@@ -41,6 +47,8 @@ class SimpleList extends HTMLElement {
      */
     connectedCallback() {
         /** custom element 에서 바인딩한 속성을 주입 */
+        this.test = this.getAttribute('item');
+        console.log(this.test);
 
         // 리스트 방향 설정
         this.listType = (this.getAttribute('listType')) ? this.getAttribute('listType') + "-list" : this.listType + "-list";
@@ -68,7 +76,7 @@ class SimpleList extends HTMLElement {
         }
 
         if (this.getAttribute('id'))
-            this.shadowRoot.querySelector('.list').setAttribute('id', this.getAttribute('id'));
+            this.shadowRoot.querySelector('.list-wrap').setAttribute('id', this.getAttribute('id'));
 
         if (this.getAttribute('class'))
             this.shadowRoot.querySelector('.list').classList.add(this.getAttribute('class'));

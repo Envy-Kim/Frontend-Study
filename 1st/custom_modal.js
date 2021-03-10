@@ -1,13 +1,5 @@
 class SimpleModal extends HTMLElement {
 
-    /**
-     * Specify observed attributes so that attributeChangedCallback will work
-     * 관찰할 속성을 지정하여, 해당 속성이 변경되었을 때 attributeChangedCallback() 이 동작
-     */
-    static get observedAttributes() {
-        return ['visible'];
-    }
-
     constructor() {
         super();
 
@@ -87,7 +79,6 @@ class SimpleModal extends HTMLElement {
                     right: 30px;
                     font-size: 42px;
                 }
-
                 .close:hover,
                 .close:focus {
                     color: black;
@@ -135,6 +126,14 @@ class SimpleModal extends HTMLElement {
     }
 
     /**
+     * Specify observed attributes so that attributeChangedCallback will work
+     * 관찰할 속성을 지정하여, 해당 속성이 변경되었을 때 attributeChangedCallback() 이 동작
+     */
+    static get observedAttributes() {
+        return ['visible'];
+    }
+
+    /**
      * 요소의 속성 중 하나가 어떤 식으로든 변경 될 때 마다 콜백이 실행
      *
      * @param name
@@ -143,11 +142,13 @@ class SimpleModal extends HTMLElement {
      */
     attributeChangedCallback(name, oldValue, newValue) {
         console.log('Custom element attributes changed.');
+        console.log('logging... :: ' + name + ' | ' + oldValue + ' | ' + newValue);
+        // ex) custom_modal.js:145 logging... :: visible | null | true
 
-        this._visible = (this.getAttribute('visible') === 'true') ? true : false;
-
-        if(this._visible) this._show();
-        else this._hide();
+        if(name === 'visible') {
+            this._visible = (newValue === 'true');
+            this._visible ? this._show() : this._hide();
+        }
     }
 }
 
