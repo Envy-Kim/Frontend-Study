@@ -155,7 +155,6 @@ class SimpleModal extends HTMLElement {
         }
 
         if(name == 'bgcolor') {
-            console.log('change');
             this._bgColor = (this.getAttribute('bgcolor')) ? this.getAttribute('bgcolor') : this._bgColor;
             this.shadowRoot.querySelector('.modal-title').style.backgroundColor
                 = this._bgColor;
