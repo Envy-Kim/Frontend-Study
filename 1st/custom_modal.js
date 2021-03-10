@@ -4,7 +4,9 @@ class SimpleModal extends HTMLElement {
         super();
 
         this.attachShadow({mode: "open"});
+
         this._visible = false;
+        this._bgColor = 'yellow';
 
         this.shadowRoot.innerHTML = `
             <div class="modal-wrap">
@@ -103,11 +105,13 @@ class SimpleModal extends HTMLElement {
      * 가상 트리가 document 에 연결된후 콜백
      */
     connectedCallback() {
+        this._bgColor = (this.getAttribute('bgColor')) ? this.getAttribute('bgColor') : this._bgColor;
+
         this._modal = this.shadowRoot.querySelector('.modal-wrap');
         this.shadowRoot.querySelector('.close').addEventListener('click', ()=> this.setAttribute('visible', 'false'));
 
         this.shadowRoot.querySelector('.modal-title').style.backgroundColor
-            = this.getAttribute('bgcolor');
+            = this._bgColor;
     }
 
     /**
