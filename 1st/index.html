@@ -144,7 +144,17 @@
         ]
 
         listItem.map((item, index) => {
-            // 이용할 템블릿을 복제
+            /**
+             * 이용할 템플릿을 복제
+             * => 템플릿을 그냥 사용하지 않고 복제하는 이유는 참조의 문제
+             *
+             * javascript은 원시타입(Primitive Type)과 참조타입(Reference Type)이 있다
+             * 원시타입(Primitive Type) : number, string, boolean, null, undifined
+             * 참조타입(Reference Type) : object, array, function
+             *
+             * cloneNode를 사용하지 않고 데이터를 설정하면 item이 추가되는 것이 아닌
+             * 하나의 item을 계속 수정하는 것이 된다.
+             */
             let template = document.querySelector('#li-template1').cloneNode(true);
 
             let div = document.createElement('div');

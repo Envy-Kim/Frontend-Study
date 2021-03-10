@@ -55,8 +55,22 @@ class SimpleList extends HTMLElement {
         this.bgColor = (this.getAttribute('bgColor')) ? this.getAttribute('bgColor') : this.bgColor;
         this.activeColor = (this.getAttribute('activeColor')) ? this.getAttribute('activeColor') : this.activeColor;
 
+        /**
+         * var / let / const
+         *
+         * var
+         * function level scope, 중복선언 가능, 선언전 사용해도 에러 발생 X
+         *
+         * let
+         * var와 let 변수 선언시 초기화 하지 않아도 됨.
+         *
+         * const
+         * 값의 재할당이 불가하기 때문에 변수 선언시 초기화 필수.
+         * 중복된 이름의 변수 선언 불가
+         */
         // li에 배경색 설정 및 이벤트 주입
         let list = this.shadowRoot.querySelector(".itemSlot");
+
         /**
          * list.assignedNodes() 사용시 빈배열 반환.
          *
