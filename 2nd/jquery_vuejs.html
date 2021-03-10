@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="utf-8">
+
+    <title>프론트엔드 스터디</title>
+
+    <!-- bootstrap 5.0.0 -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+            crossorigin="anonymous">
+
+    <!-- vuejs dist -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+
+<!-- Vue -->
+<div id="app">
+    <p>Vue</p>
+    <div v-for="(item, index) in vListItems">
+        <ul :class="item.class">
+            <li>번호 : {{index + 1}}</li>
+            <li>Title : {{item.title}}</li>
+            <li>Message : {{ (item.showMsg === 'msg1') ? item.msg1 : item.msg2 }}</li>
+            <li>
+                <button @click="changeMsg(index)">메세지 변경</button>
+                <button @click="addClass(index)">클래스 변경</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+<script>
+
+    /**
+     * Vuejs
+     */
+    new Vue({
+        el: '#app',
+        data: {
+            vListItems: [
+                {
+                    title: '3/10 프론트엔드 스터디',
+                    msg1: '스터디 중',
+                    msg2: '스터디 끝',
+                    toggle: true,
+                    showMsg: 'msg1',
+                    class: '',
+                },
+                {
+                    title: '3/17 프론트엔드 스터디',
+                    msg1: '스터디 예정',
+                    msg2: '스터디 취소',
+                    toggle: true,
+                    showMsg: 'msg1',
+                    class: '',
+                },
+            ],
+        },
+        methods: {
+            changeMsg: function (key) {
+                this.vListItems[key].toggle = !this.vListItems[key].toggle
+                this.vListItems[key].showMsg = (this.vListItems[key].toggle) ? 'msg1' : 'msg2';
+            },
+            addClass: function (key) {
+                this.vListItems[key].class = 'ul-type';
+            }
+        }
+    })
+</script>
+
+<style>
+    .ul-type {
+        background-color: yellow;
+        list-style: none;
+    }
+</style>
+</html>
