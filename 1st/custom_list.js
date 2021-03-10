@@ -47,9 +47,6 @@ class SimpleList extends HTMLElement {
      */
     connectedCallback() {
         /** custom element 에서 바인딩한 속성을 주입 */
-        this.test = this.getAttribute('item');
-        console.log(this.test);
-
         // 리스트 방향 설정
         this.listType = (this.getAttribute('listType')) ? this.getAttribute('listType') + "-list" : this.listType + "-list";
         this.shadowRoot.querySelector('.list').classList.add(this.listType);
@@ -70,7 +67,6 @@ class SimpleList extends HTMLElement {
 
 
         for(let i=0; i < this.item.length; i++){
-            console.log(this.item[i]);
             this.item[i].style.backgroundColor = this.bgColor;
             this.item[i].addEventListener('click', ()=> this._setActiveBgColor(i));
         }

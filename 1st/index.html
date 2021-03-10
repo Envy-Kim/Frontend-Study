@@ -41,7 +41,7 @@
                 bgColor="white"
                 activeColor="gray">
             <template id="li-template1">
-                <li slot="item">test1</li>
+                <li slot="item" onclick="showDetail(this, 1)">test1</li>
             </template>
         </simple-list>
 
@@ -49,7 +49,7 @@
                 id="list2"
                 listType="horizontal">
             <template id="li-template2">
-                <li slot="item">
+                <li slot="item" onclick="showDetail(this, 2)">
                     <div class="card">
                         <img src="images/store_thum01.png" class="card-img"/>
                         <p class="card-title">Title</p>
@@ -59,10 +59,9 @@
         </simple-list>
 
         <simple-modal
-            id="item-modal"
-            bgColor="">
-            <slot slot="title">모달1</slot>
-            <slot slot="content">모달1 컨텐츠</slot>
+            id="item-modal">
+            <slot slot="title" id="modal-title">리스트 타이틀</slot>
+            <slot slot="content" id="modal-content">리스트 컨텐츠</slot>
         </simple-modal>
     </section>
 
@@ -114,46 +113,53 @@
         let listItem2 = [
             {
                 title: '가게1',
-                content: '내용1',
+                content: '대충 가게 소개',
                 image: './images/store_thum01.png',
                 bgColor: 'gray',
             },
             {
                 title: '가게2',
-                content: '내용2',
+                content: '가게 소개 같은 것',
                 image: './images/store_thum02.png',
                 bgColor: 'white',
             },
             {
                 title: '가게3',
-                content: '내용3',
+                content: '콘텐츠',
                 image: './images/store_thum03.png',
                 bgColor: 'pink',
             },
             {
                 title: '가게4',
-                content: '내용4',
+                content: '콘텐츠였던 것',
                 image: './images/store_thum04.png',
                 bgColor: 'skyblue',
             },
             {
-                title: '가게4',
-                content: '내용5',
+                title: '가게5',
+                content: '이제 그만...',
                 image: './images/store_thum05.png',
                 bgColor: 'brown',
             },
         ]
 
         listItem.map((item, index) => {
+            // 이용할 템블릿을 복제
             let template = document.querySelector('#li-template1').cloneNode(true);
 
             let div = document.createElement('div');
             div.innerHTML = template.innerHTML.trim();
-            div.querySelector('li').innerText = item.title;
+            div.querySelector('li').innerText = item.title; // 타이틀 설정
 
+            // li 태그로 반환하기 위해서 firstChild 를 이용하여 자식 노드를 반환
             let itemClone = div.firstChild;
+            // 속정 추가
+            itemClone.setAttribute('data-title', item.title);
             itemClone.setAttribute('data-content', item.content);
+            itemClone.setAttribute('data-bgcolor', item.bgColor);
             itemClone.setAttribute('data-index', index);
+
+            // 템플릿을 이용하여 복제한 슬롯을 추가
             document.querySelector('#list1').append(itemClone);
         })
 
@@ -166,10 +172,43 @@
             div.querySelector('.card-img').setAttribute('src', item.image);
 
             let itemClone = div.firstChild;
+            itemClone.setAttribute('data-title', item.title);
             itemClone.setAttribute('data-content', item.content);
+            itemClone.setAttribute('data-bgcolor', item.bgColor);
             itemClone.setAttribute('data-index', index);
             document.querySelector('#list2').append(itemClone);
         })
+
+        function showDetail(obj, type = 1) {
+            // 선택한 item의 정보를 모달에 세팅
+            console.log(obj);
+            let itemModal = document.querySelector('#item-modal');
+
+            if(type == 2) {
+                // 템플릿의 컨텐츠 내용 삭제
+                itemModal.querySelector('#modal-content').innerHTML = '';
+
+                // div를 만들어 내부에 이미지와 콘텐츠를
+                let divElement = document.createElement('div');
+
+                let modalImg = document.createElement('img');
+                modalImg.setAttribute('src', obj.querySelector('.card-img').getAttribute('src'));
+
+                let contentTxt = document.createElement('p');
+                contentTxt.innerHTML = obj.getAttribute('data-content');
+
+                divElement.append(modalImg, contentTxt);
+
+                itemModal.querySelector('#modal-content').innerHTML = divElement.innerHTML;
+            } else {
+                itemModal.querySelector('#modal-content').innerHTML = obj.getAttribute('data-content');
+            }
+
+            itemModal.querySelector('#modal-title').innerHTML = obj.getAttribute('data-title');
+            itemModal.setAttribute('bgcolor', obj.getAttribute('data-bgcolor'));
+
+            showModal('item-modal');
+        }
     </script>
 </body>
 </html>

@@ -105,7 +105,7 @@ class SimpleModal extends HTMLElement {
      * 가상 트리가 document 에 연결된후 콜백
      */
     connectedCallback() {
-        this._bgColor = (this.getAttribute('bgColor')) ? this.getAttribute('bgColor') : this._bgColor;
+        this._bgColor = (this.getAttribute('bgcolor')) ? this.getAttribute('bgcolor') : this._bgColor;
 
         this._modal = this.shadowRoot.querySelector('.modal-wrap');
         this.shadowRoot.querySelector('.close').addEventListener('click', ()=> this.setAttribute('visible', 'false'));
@@ -134,7 +134,7 @@ class SimpleModal extends HTMLElement {
      * 관찰할 속성을 지정하여, 해당 속성이 변경되었을 때 attributeChangedCallback() 이 동작
      */
     static get observedAttributes() {
-        return ['visible'];
+        return ['visible', 'bgcolor'];
     }
 
     /**
@@ -152,6 +152,13 @@ class SimpleModal extends HTMLElement {
         if(name === 'visible') {
             this._visible = (newValue === 'true');
             this._visible ? this._show() : this._hide();
+        }
+
+        if(name == 'bgcolor') {
+            console.log('change');
+            this._bgColor = (this.getAttribute('bgcolor')) ? this.getAttribute('bgcolor') : this._bgColor;
+            this.shadowRoot.querySelector('.modal-title').style.backgroundColor
+                = this._bgColor;
         }
     }
 }
