@@ -166,13 +166,21 @@
 
                 setTimeout(() => {
                     this.snackbarInfo.visible = false
+                    /**
+                     * todo: 컴포넌트화 필요
+                     * 현재는 컴포넌트화 되어있지 않아 스넥바를 여러개 사용하려면 초기화 필요
+                     */
                     this.snackbarInfo.isWork = false;
+                    this.snackbarInfo.content = "This is Snackbar!!";
+                    this.snackbarInfo.position = "center";
+                    this.snackbarInfo.showAction = false;
+                    this.snackbarInfo.actionText = "Action";
+                    this.snackbarInfo.action = this.alertInfo;
                 }, 3000)
 
                 /**
-                 * snackbar 실행중 다른 버튼에 영향받지 않도록 코드 추가
-                 *
-                 * => component로 만든다면 다른 버튼을 눌렀을 떄 영향을 받지 않을까?
+                 * 컴포넌트화 하지 않은 코드에 의해 snackbar 실행중 다른 버튼에 영향을 받음.
+                 * 실행 중 데이터 변경을 막기위해 코드 추가
                  */
                 if(this.snackbarInfo.isWork) {
                     alert('Snackbar already working...');
