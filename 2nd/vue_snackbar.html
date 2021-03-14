@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue_Snackbar</title>
+
+    <!-- bootstrap 5.0.0 -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+            crossorigin="anonymous">
+
+    <!-- vuejs dist -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="showSnackbar('left snackbar', 'left')">
+            Snackbar Button No Action
+        </button>
+
+        <button @click="showSnackbar('center snackbar', 'center', true, 'ActBtn', alertHello)">
+            Snackbar Button
+        </button>
+
+        <button @click="showSnackbar('right snackbar', 'right', true, '버튼')">
+            Snackbar Button(오른쪽)
+        </button>
+
+        <!-- snackbar 영역 S -->
+        <transition name="snackbar-fade">
+            <div id="snackbar"
+                 v-show=snackbarInfo.visible
+                 class="snackbar-container snackbar-pos"
+                 :class="snackbarInfo.position">
+                <p>{{snackbarInfo.content}}</p>
+
+                <button class="action" v-show=snackbarInfo.showAction>
+                    {{snackbarInfo.actionText}}
+                </button>
+            </div>
+        </transition>
+        <!-- snackbar 영역 E -->
+    </div>
+</body>
+
+<style>
+    /* css reset */
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+
+    .snackbar-fade-enter-active,
+    .snackbar-fade-leave-active {
+        transition: all .3s ease;
+    }
+
+    .snackbar-fade-enter,
+    .snackbar-fade-leave-to {
+        transform: translateY(40px) !important;
+        opacity: 0;
+    }
+
+    .snackbar-container {
+        font-size: 14px;
+        min-height: 14px;
+        background-color: #070b0e;
+        position: fixed;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        line-height: 22px;
+        padding: 18px 24px;
+        bottom: -100px;
+        top: -100px;
+    }
+
+    @media (min-width: 640px) {
+        .snackbar-container {
+            min-width: 288px;
+            max-width: 568px;
+            display: inline-flex;
+            border-radius: 2px;
+            margin: 24px
+        }
+    }
+
+    @media (max-width: 640px) {
+        .snackbar-container {
+            left: 0;
+            right: 0;
+            width: 100%
+        }
+    }
+
+    .snackbar-pos {
+        top: auto !important;
+        bottom: 0;
+    }
+
+    .snackbar-pos.left {
+        left: 0;
+    }
+
+    .snackbar-pos.center {
+        left: 50%;
+        transform: translate(-50%, 0)
+    }
+
+    .snackbar-pos.right {
+        right: 0;
+    }
+
+    .snackbar-container .action {
+        background: inherit;
+        display: inline-block;
+        border: none;
+        font-size: inherit;
+        color: #4caf50;
+        margin: 0 0 0 24px;
+        padding: 0;
+        min-width: min-content;
+        cursor: pointer
+    }
+</style>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            snackbarInfo: {
+                visible: false,
+                isWork: false,
+                content: "This is Snackbar!!",
+                position: 'center', // left, center, right
+                showAction: false,
+                actionText: "Action",
+                action: this.alertInfo,
+            }
+        },
+        methods: {
+            showSnackbar: function (content, position, showAction = false, actionText = '', action) {
+                setTimeout(() => {
+                    this.snackbarInfo.visible = true;
+                    this.snackbarInfo.isWork = true;
+                }, 0)
+
+                setTimeout(() => {
+                    this.snackbarInfo.visible = false
+                    this.snackbarInfo.isWork = false;
+                }, 3000)
+
+                /**
+                 * snackbar 실행중 다른 버튼에 영향받지 않도록 코드 추가
+                 *
+                 * => component로 만든다면 다른 버튼을 눌렀을 떄 영향을 받지 않을까?
+                 */
+                if(this.snackbarInfo.isWork) {
+                    alert('Snackbar already working...');
+                    return;
+                }
+
+                if(content !== '' && content !== undefined) {
+                    this.snackbarInfo.content = content;
+                }
+                if(position !== '' && position !== undefined) {
+                    this.snackbarInfo.position = position;
+                }
+                if(showAction) {
+                    this.snackbarInfo.showAction = showAction;
+                    this.snackbarInfo.actionText = (actionText) ? actionText : this.snackbarInfo.actionText;
+
+                    // snackbar action 버튼에 클릭 이벤트 바인딩
+                    if(action !== '' && action !== undefined) {
+                        action = action ? action : this.showSnackbar.action;
+                    }
+                    document.querySelector('.snackbar-container .action').addEventListener('click', action);
+                }
+            },
+            alertInfo: function () {
+                alert('Vue Snackbar!!');
+            },
+            alertHello: function () {
+                alert('Hello World!!');
+            }
+        }
+    })
+</script>
+
+</html>
