@@ -15,34 +15,34 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-    <div id="app">
-        <button @click="showSnackbar('left snackbar', 'left')">
-            Snackbar Button No Action
-        </button>
+<div id="app">
+    <button @click="showSnackbar(snackbarItems[0])">
+        Snackbar Button No Action
+    </button>
 
-        <button @click="showSnackbar('center snackbar', 'center', true, 'ActBtn', alertHello)">
-            Snackbar Button
-        </button>
+    <button @click="showSnackbar(snackbarItems[1])">
+        Snackbar Button
+    </button>
 
-        <button @click="showSnackbar('right snackbar', 'right', true, '버튼')">
-            Snackbar Button(오른쪽)
-        </button>
+    <button @click="showSnackbar(snackbarItems[2])">
+        Snackbar Button(오른쪽)
+    </button>
 
-        <!-- snackbar 영역 S -->
-        <transition name="snackbar-fade">
-            <div id="snackbar"
-                 v-show=snackbarInfo.visible
-                 class="snackbar-container snackbar-pos"
-                 :class="snackbarInfo.position">
-                <p>{{snackbarInfo.content}}</p>
+    <!-- snackbar 영역 S -->
+    <transition name="snackbar-fade">
+        <div id="snackbar"
+             v-show=snackbar.visible
+             class="snackbar-container snackbar-pos"
+             :class="snackbar.position">
+            <p>{{snackbar.content}}</p>
 
-                <button class="action" v-show=snackbarInfo.showAction>
-                    {{snackbarInfo.actionText}}
-                </button>
-            </div>
-        </transition>
-        <!-- snackbar 영역 E -->
-    </div>
+            <button class="action" v-show=snackbar.showAction @click="alertInfo(snackbar.content)">
+                {{snackbar.actionText}}
+            </button>
+        </div>
+    </transition>
+    <!-- snackbar 영역 E -->
+</div>
 </body>
 
 <style>
@@ -84,14 +84,16 @@
         font-size: 14px;
         min-height: 14px;
         background-color: #070b0e;
-        position: fixed;
+        position: absolute;
         justify-content: space-between;
         align-items: center;
         color: #fff;
         line-height: 22px;
         padding: 18px 24px;
-        bottom: -100px;
         top: -100px;
+        bottom: -100px;
+        left: 0;
+        right: 0;
     }
 
     @media (min-width: 640px) {
@@ -118,16 +120,16 @@
     }
 
     .snackbar-pos.left {
-        left: 0;
+        margin-right: auto;
     }
 
     .snackbar-pos.center {
-        left: 50%;
-        transform: translate(-50%, 0)
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .snackbar-pos.right {
-        right: 0;
+        margin-left: auto;
     }
 
     .snackbar-container .action {
@@ -147,69 +149,93 @@
     new Vue({
         el: '#app',
         data: {
-            snackbarInfo: {
+            snackbar: {
                 visible: false,
-                isWork: false,
+                timer: '',
                 content: "This is Snackbar!!",
                 position: 'center', // left, center, right
                 showAction: false,
                 actionText: "Action",
                 action: this.alertInfo,
-            }
+            },
+            snackbarItems: [
+                {
+                    content: "This is left Snackbar",
+                    position: "left",
+                    showAction: false,
+                    actionText: "",
+                },
+                {
+                    content: "This is Snackbar!!",
+                    position: 'center',
+                    showAction: true,
+                    actionText: "",
+                },
+                {
+                    content: "This is right snackbar!!",
+                    position: 'right',
+                    showAction: true,
+                    actionText: "버튼",
+                },
+            ],
         },
         methods: {
-            showSnackbar: function (content, position, showAction = false, actionText = '', action) {
-                setTimeout(() => {
-                    this.snackbarInfo.visible = true;
-                    this.snackbarInfo.isWork = true;
-                }, 0)
+            showSnackbar: function (item) {
+                console.log(this.snackbarItems);
+                // 이미 동작하는 타이머가 있는지 확인, 타이머가 있다면 종료.
+                this.checkTimer(item);
 
-                setTimeout(() => {
-                    this.snackbarInfo.visible = false
-                    /**
-                     * todo: 컴포넌트화 필요
-                     * 현재는 컴포넌트화 되어있지 않아 스넥바를 여러개 사용하려면 초기화 필요
-                     */
-                    this.snackbarInfo.isWork = false;
-                    this.snackbarInfo.content = "This is Snackbar!!";
-                    this.snackbarInfo.position = "center";
-                    this.snackbarInfo.showAction = false;
-                    this.snackbarInfo.actionText = "Action";
-                    this.snackbarInfo.action = this.alertInfo;
-                }, 3000)
+                // 스넥바 노출 - 딜레이 0.5초
+                setTimeout(() => { this.snackbar.visible = true; }, 500)
 
-                /**
-                 * 컴포넌트화 하지 않은 코드에 의해 snackbar 실행중 다른 버튼에 영향을 받음.
-                 * 실행 중 데이터 변경을 막기위해 코드 추가
-                 */
-                if(this.snackbarInfo.isWork) {
-                    alert('Snackbar already working...');
-                    return;
-                }
+                // 스넥바가 사라질 타이머 설정
+                this.snackbar.timer = setTimeout(() => { this.snackbar.visible = false }, 3000)
+            },
+            checkTimer: function (item) {
+                if(this.snackbar.visible && (this.snackbar.timer !== '' || this.snackbar.timer !== undefined)) {
+                    clearTimeout(this.snackbar.timer);
+                    this.snackbar.visible = false;
 
-                if(content !== '' && content !== undefined) {
-                    this.snackbarInfo.content = content;
-                }
-                if(position !== '' && position !== undefined) {
-                    this.snackbarInfo.position = position;
-                }
-                if(showAction) {
-                    this.snackbarInfo.showAction = showAction;
-                    this.snackbarInfo.actionText = (actionText) ? actionText : this.snackbarInfo.actionText;
+                    // 스넥바가 사라진 후 동작
+                    setTimeout(() => {
+                        // 스넥바 초기화
+                        this.clearSnackbar();
 
-                    // snackbar action 버튼에 클릭 이벤트 바인딩
-                    if(action !== '' && action !== undefined) {
-                        action = action ? action : this.showSnackbar.action;
-                    }
-                    document.querySelector('.snackbar-container .action').addEventListener('click', action);
+                        // 스넥바에 데이터 설정
+                        this.setSnackbar(item);
+                    }, 300);
+                } else {
+                    // 스넥바 초기화
+                    this.clearSnackbar();
+
+                    // 스넥바에 데이터 설정
+                    this.setSnackbar(item);
                 }
             },
-            alertInfo: function () {
-                alert('Vue Snackbar!!');
+            setSnackbar: function (item) {
+                console.log(item);
+
+                if(item.content !== '' && item.content !== undefined) {
+                    this.snackbar.content = item.content;
+                }
+                if(item.position !== '' && item.position !== undefined) {
+                    this.snackbar.position = item.position;
+                }
+                if(item.showAction) {
+                    this.snackbar.showAction = item.showAction;
+                    this.snackbar.actionText = (item.actionText) ? item.actionText : this.snackbar.actionText;
+                }
             },
-            alertHello: function () {
-                alert('Hello World!!');
-            }
+            clearSnackbar: function () {
+                this.snackbar.timer = '';
+                this.snackbar.content = "This is Snackbar!!";
+                this.snackbar.position = 'center';
+                this.snackbar.showAction = false;
+                this.snackbar.actionText = "Action";
+            },
+            alertInfo: function (info) {
+                alert(info);
+            },
         }
     })
 </script>
