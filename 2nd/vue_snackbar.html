@@ -181,7 +181,6 @@
         },
         methods: {
             showSnackbar: function (item) {
-                console.log(this.snackbarItems);
                 // 이미 동작하는 타이머가 있는지 확인, 타이머가 있다면 종료.
                 this.checkTimer(item);
 
@@ -213,8 +212,6 @@
                 }
             },
             setSnackbar: function (item) {
-                console.log(item);
-
                 if(item.content !== '' && item.content !== undefined) {
                     this.snackbar.content = item.content;
                 }
