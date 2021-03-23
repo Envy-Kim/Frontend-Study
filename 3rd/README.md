@@ -37,3 +37,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## 과제
 라우터 기능을 이용한 메뉴 구현
+git : https://github.com/Envy-Kim/vue-route-study
