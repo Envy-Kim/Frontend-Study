@@ -25,11 +25,6 @@ const router = [
         component: Custom,
         title: 'Custom Input Component'
     },
-    {
-        path: '/dynamic',
-        component: Dynamic,
-        title: 'Dynamic Component'
-    },
 ]
 
 export default router
