@@ -2,7 +2,7 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col mb-4"
          v-for="(item, key) in items" :key="key">
-      <div class="card">
+      <div class="card text-white">
         <img :src="(item.image) ? item.image : fileIcon" class="card-img-top" alt="...">
         <div class="img-cover"></div>
         <div class="card-body">
@@ -50,7 +50,6 @@ export default {
   .card-body {
     position: absolute;
     display: none;
-    color: #ffffff;
     z-index: 1;
 
     .card-title {

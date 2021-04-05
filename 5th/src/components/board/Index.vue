@@ -41,14 +41,20 @@ export default {
     bbsType: {
       type: String,
       default: 'list',
+      validator(value) {
+        // 값이 항상 아래 세 개의 문자열 중 하나여야 합니다.
+        return ['list', 'gallery', 'webzine'].indexOf(value) !== -1
+      },
     },
     items: {
       type: Array,
       required: true,
+      validator: (list => list.length >0),
     },
     columns: {
       type: Array,
       required: true,
+      validator: (list => list.length >0),
     }
   },
   computed: {
