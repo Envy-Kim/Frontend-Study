@@ -2,7 +2,6 @@ import Main from "@/pages/Main"
 import Install from "@/pages/InstallPage"
 import Route from "@/pages/RoutePage"
 import Custom from "@/pages/CustomPage"
-import Dynamic from "@/pages/DynamicPage"
 
 const router = [
     {
