@@ -1,17 +1,13 @@
 <template>
-  <div class="content">
+  <div class="container">
     <h1>동적 컴포넌트</h1>
 
-    <vue-board :tdata="listItems" bbs-type="webzine" :mode="2"></vue-board>
-
-
-    <div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
+    <button @click="listType='list'">List</button>
+    <button @click="listType='gallery'">Gallery</button>
+    <button @click="listType='webzine'">Webzine</button>
+    <keep-alive>
+    <vue-board :columns="listColumns" :items="listItems" :bbs-type="listType" :mode="1"></vue-board>
+    </keep-alive>
   </div>
 </template>
 
@@ -20,10 +16,32 @@ import VueBoard from '@/components/board/Index'
 
 export default {
   name: "index",
-  components: { VueBoard },
+  components: {VueBoard},
   data() {
     return {
       listType: 'list', // list(table), gallery, webzine
+      listColumns: [
+        {
+          label: '번호',
+          value: 'idx',
+        },
+        {
+          label: '제목',
+          value: 'subject',
+        },
+        {
+          label: '조회수',
+          value: 'hit',
+        },
+        {
+          label: '글쓴이',
+          value: 'author',
+        },
+        {
+          label: '작성일',
+          value: 'created_at',
+        },
+      ],
       listItems: [
         {
           idx: 1,
