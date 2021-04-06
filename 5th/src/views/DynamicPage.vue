@@ -3,9 +3,9 @@
     <h1>동적 컴포넌트</h1>
 
     <div class="mb-3">
-      <button @click="setListType('list')">List</button>
-      <button @click="setListType('gallery')">Gallery</button>
-      <button @click="setListType('webzine')">Webzine</button>
+      <button type="button" class="btn btn-primary" @click="setListType('list')">List</button>
+      <button type="button" class="btn btn-success" @click="setListType('gallery')">Gallery</button>
+      <button type="button" class="btn btn-danger" @click="setListType('webzine')">Webzine</button>
     </div>
 
     <vue-board :columns="listColumns"
@@ -122,12 +122,22 @@ export default {
       this.listType = type
       // 변경된 게시판 타입을 localStorage에 저장
       localStorage.setItem('listType', type)
+    },
+  },
+  watch: {
+    selectedItem: function(item) {
+      console.log('change selectedItem')
+      ++item.hit
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+.btn {
+  margin-right: 5px;
+}
+
 .float-right {
   &::after {
     display: block;
