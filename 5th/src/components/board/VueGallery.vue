@@ -2,7 +2,7 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <div class="col mb-4"
          v-for="(item, key) in items" :key="key">
-      <div class="card text-white">
+      <div class="card text-white" @click="selectItem(item)">
         <img :src="(item.image) ? item.image : fileIcon" class="card-img-top" alt="...">
         <div class="img-cover"></div>
         <div class="card-body">
@@ -33,6 +33,12 @@ export default {
   data() {
     return {
       fileIcon: require('@/assets/images/image_icon.png')
+    }
+  },
+  methods: {
+    selectItem(item) {
+      this.$emit('click')
+      this.$emit('input', item)
     }
   }
 }

@@ -3,22 +3,36 @@
     <keep-alive>
       <!-- :is 를 이용한 동적 컴포넌트 -->
       <div v-if="mode === 1">
-        <component :is="viewComponent" :columns="columns" :items="items" ></component>
+        <component :is="viewComponent"
+                   :columns="columns"
+                   :items="items"
+                   v-model="value"
+                   @input="$emit('input', value)"
+                   @click="$emit('click')" ></component>
       </div>
 
       <!-- v-if/else 를 이용한 컴포넌트 변경 -->
       <div v-else>
         <vue-table v-if="bbsType === 'list'"
                    :columns="columns"
-                   :items="items" >
+                   :items="items"
+                   v-model="value"
+                   @input="$emit('input', value)"
+                   @click="$emit('click')" >
         </vue-table>
 
         <vue-gallery v-else-if="bbsType === 'gallery'"
-                     :items="items" >
+                     :items="items"
+                     v-model="value"
+                     @input="$emit('input', value)"
+                     @click="$emit('click')" >
         </vue-gallery>
 
         <vue-webzine v-else
-                     :items="items" >
+                     :items="items"
+                     v-model="value"
+                     @input="$emit('input', value)"
+                     @click="$emit('click')" >
         </vue-webzine>
       </div>
     </keep-alive>
@@ -55,6 +69,9 @@ export default {
       type: Array,
       required: true,
       validator: (list => list.length >0),
+    },
+    value: {
+      type: Object,
     }
   },
   computed: {
@@ -68,7 +85,7 @@ export default {
 
       return view
     },
-  }
+  },
 }
 </script>
 

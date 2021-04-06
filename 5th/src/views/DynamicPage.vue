@@ -8,18 +8,39 @@
       <button @click="setListType('webzine')">Webzine</button>
     </div>
 
-    <vue-board :columns="listColumns" :items="listItems" :bbs-type="listType" :mode="1"></vue-board>
+    <vue-board :columns="listColumns"
+               :items="listItems"
+               :bbs-type="listType"
+               :mode="1"
+               v-model="selectedItem"
+               @click="modalShow = true"></vue-board>
+
+    <base-modal :show="modalShow" @close="modalShow = false">
+      <h5 slot="modal-title">{{ selectedItem.subject }}</h5>
+
+      <div class="modal-info mb-5">
+        <span>조회수 : {{ selectedItem.hit }}</span>
+        <span class="float-right">{{ selectedItem.created_at }}</span><br/>
+        <span class="float-right">글쓴이 : {{ selectedItem.author }}</span>
+      </div>
+
+      <img :src="selectedItem.image" class="img-fluid w-100 mb-3">
+      <p>{{ selectedItem.content }}</p>
+    </base-modal>
   </div>
 </template>
 
 <script>
 import VueBoard from '@/components/board/Index'
+import BaseModal from '@/components/BaseModal'
 
 export default {
   name: "DynamicPage",
-  components: {VueBoard},
+  components: {VueBoard, BaseModal},
   data() {
     return {
+      modalShow: false,
+      selectedItem: {},
       listType: (localStorage.getItem('listType')) ? localStorage.getItem('listType') : 'list',
       listColumns: [
         {
@@ -107,5 +128,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.float-right {
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
 </style>

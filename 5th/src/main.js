@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router/index'
 
 // bootstrap 적용
+import 'bootstrap/dist/css/bootstrap-reboot.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
 Vue.config.productionTip = false
