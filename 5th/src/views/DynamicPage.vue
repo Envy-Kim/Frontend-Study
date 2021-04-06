@@ -16,7 +16,7 @@
 import VueBoard from '@/components/board/Index'
 
 export default {
-  name: "index",
+  name: "DynamicPage",
   components: {VueBoard},
   data() {
     return {
