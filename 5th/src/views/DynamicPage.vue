@@ -64,11 +64,11 @@ export default {
         },
         {
           idx: 3,
-          subject: '제목1',
-          content: '내용1',
-          image: '',
-          hit: 1,
-          author: '글쓴이1',
+          subject: '어둠의 댄서',
+          content: '샘 레이미 감독의 스파이더맨 트릴로지에서 춤을 담당하고 있는 어둠의 댄서, 토비 맥과이어. ',
+          image: require('@/assets/images/image3.gif'),
+          hit: 7,
+          author: '스파이디',
           created_at: '2021-04-05 11:42:24',
         },
         {
