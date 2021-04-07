@@ -79,13 +79,10 @@ export default {
       type: Array,
       required: true,
       validator: (list => list.length >0),
-    },
-    value: {
-      type: Object,
     }
   },
   computed: {
-    viewComponent: function () {
+    viewComponent() {
       let view = VueTable
 
       if (this.bbsType === 'gallery')
