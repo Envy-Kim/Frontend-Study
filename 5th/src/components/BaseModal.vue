@@ -40,7 +40,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .modal-mask {
   position: fixed;
   background-color: rgb(0, 0, 0);
@@ -67,6 +66,7 @@ export default {
 .modal-fade-enter-active, .modal-fade-leave-active {
   transition: opacity .5s;
 }
+
 .modal-fade-enter, .modal-fade-leave-to {
   opacity: 0;
 }

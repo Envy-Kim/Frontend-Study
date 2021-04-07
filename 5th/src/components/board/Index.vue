@@ -108,10 +108,12 @@ export default {
 .list-fade-enter-active, .list-fade-leave-active {
   transition: all .3s;
 }
+
 .list-fade-enter {
   opacity: 0;
   transform: translateX(50px);
 }
+
 .list-fade-leave-to {
    opacity: 0;
    transform: translateX(-50px);
