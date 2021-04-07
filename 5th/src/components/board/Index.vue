@@ -105,11 +105,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .list-fade-enter-active, .list-fade-leave-active {
-  transition: opacity .3s;
+  transition: all .3s;
 }
-.list-fade-enter, .list-fade-leave-to {
+.list-fade-enter {
   opacity: 0;
+  transform: translateX(50px);
 }
+.list-fade-leave-to {
+   opacity: 0;
+   transform: translateX(-50px);
+ }
 </style>
