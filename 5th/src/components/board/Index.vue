@@ -3,12 +3,14 @@
     <keep-alive>
       <!-- :is 를 이용한 동적 컴포넌트 -->
       <div v-if="mode === 1">
-        <component :is="viewComponent"
-                   :columns="columns"
-                   :items="items"
-                   v-model="$attrs.value"
-                   @input="$emit('input', $attrs.value)"
-                   @click="$emit('click')" ></component>
+        <transition name="list-fade" mode="out-in" appear>
+          <component :is="viewComponent"
+                     :columns="columns"
+                     :items="items"
+                     v-model="$attrs.value"
+                     @input="$emit('input', $attrs.value)"
+                     @click="$emit('click')"></component>
+        </transition>
         <!--
         $attrs
         props로 인식(및 추출)되지 않는 부모 범위 속성 바인딩.
@@ -19,27 +21,29 @@
 
       <!-- v-if/else 를 이용한 컴포넌트 변경 -->
       <div v-else>
-        <vue-table v-if="bbsType === 'list'"
-                   :columns="columns"
-                   :items="items"
-                   v-model="selectItem"
-                   @input="$emit('input', selectItem)"
-                   @click="$emit('click')" >
-        </vue-table>
-
-        <vue-gallery v-else-if="bbsType === 'gallery'"
+        <transition name="list-fade" mode="out-in" appear>
+          <vue-table v-if="bbsType === 'list'"
+                     :columns="columns"
                      :items="items"
                      v-model="selectItem"
                      @input="$emit('input', selectItem)"
-                     @click="$emit('click')" >
-        </vue-gallery>
+                     @click="$emit('click')">
+          </vue-table>
 
-        <vue-webzine v-else
-                     :items="items"
-                     v-model="selectItem"
-                     @input="$emit('input', selectItem)"
-                     @click="$emit('click')" >
-        </vue-webzine>
+          <vue-gallery v-else-if="bbsType === 'gallery'"
+                       :items="items"
+                       v-model="selectItem"
+                       @input="$emit('input', selectItem)"
+                       @click="$emit('click')">
+          </vue-gallery>
+
+          <vue-webzine v-else
+                       :items="items"
+                       v-model="selectItem"
+                       @input="$emit('input', selectItem)"
+                       @click="$emit('click')">
+          </vue-webzine>
+        </transition>
       </div>
     </keep-alive>
   </div>
@@ -100,6 +104,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
+.list-fade-enter-active, .list-fade-leave-active {
+  transition: opacity .3s;
+}
+.list-fade-enter, .list-fade-leave-to {
+  opacity: 0;
+}
 </style>
